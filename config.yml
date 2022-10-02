@@ -1,5 +1,5 @@
 BaseURL: "https://example.com"
-theme: "terminalCV"
+theme: "terminalcv"
 title: "Bookmark"
 
 params:
