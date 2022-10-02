@@ -1,0 +1,35 @@
+BaseURL: "https://example.com"
+theme: "terminalCV"
+title: "Bookmark"
+
+params:
+  description: "4s3ti cv terminal format"
+  prompt: ""
+# promptColor: grey
+  promptSimbols: "~$"
+# promptSimbolsColor: grey
+  greeting: | 
+    Welcome to my online bookmark
+
+
+    Type 'help' for a list of available commands
+
+
+  whois: 
+      name: "kaleidoeye / 奂目"
+      profession: "Student"
+      location: "China"
+      email: "i@kaleidoeye.org"
+      homelink: "https://kaleidoeye.org"
+      description: |
+              
+              
+  blogs: 
+    - name: "Kaleidoeye"
+      url: "https://kaleidoeye.org"
+    - name: "HeadSalon"
+      url: "https://headsalon.org"
+  
+  tools: 
+    - name: "github"
+      url: "https://github.com/luohua17"

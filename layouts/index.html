@@ -1,0 +1,102 @@
+{{ define "body" }}
+<script> 
+jQuery(document).ready(function($) {
+    var animation = false;
+    var availableCommands = ["all", "whois", 'blogs','tools', 
+                    ] 
+
+    $('body').terminal(function(command, term) {
+
+    /* Functions to be called by commands */
+    function whois () {
+        term.echo ("");
+        {{ with .Site.Params.whois }} 
+            term.echo ("[[b;grey;]Name:]\t\t\t{{ .name }}");
+            term.echo ("[[b;grey;]Profession:]\t\t{{ .profession }}");
+            term.echo ("[[b;grey;]Location:]\t\t{{ .location }}");
+            {{ if .email }}
+                term.echo ("[[b;grey;]Email:]\t\t\t{{ .email }}");
+            {{ end }}
+            {{ if .homelink }}
+                term.echo ("[[b;grey;]Homepage:]\t\t{{ .homelink }}");
+            {{ end }}
+            {{ if .description }}
+                term.echo ("")
+                term.echo ("{{ .description }}")
+            {{ end }}
+        {{ end }}
+        term.echo ("");
+      }
+      
+    function blogs () {
+      term.echo("");
+      {{with .Site.Params.blogs }}
+          {{ range . }}
+              term.echo("{{ .name }}:\t\t" + "{{ .url }}");
+          {{ end }}
+      {{ end }}
+      term.echo("")
+    }
+    
+    function tools () {
+      term.echo("");
+      {{with .Site.Params.tools }}
+          {{ range . }}
+              term.echo("{{ .name }}:" + "\t\t{{ .url }}");
+          {{ end }}
+      {{ end }}
+      term.echo("")
+    }
+
+    function help () {
+        term.echo("\n[[b;white;]Available commands:]\n" +
+                  "\n" + availableCommands.join(' ')+ '\n') 
+    }
+
+
+      /* Functions End */
+        commands = command.split(/[ ]+/);
+        switch(commands[0]) {
+            case 'whois':
+                whois();
+                break;
+            case 'blogs':
+                blogs();
+                break;
+            case 'tools':
+                tools();
+                break;
+            case 'help':
+                help();
+                break;
+            case 'all':
+                whois();
+                blogs();
+                tools();
+                break;
+            case ':(){:|:&};:':
+            default:
+                term.echo("\nunknown command: " + command + "\n" +
+                          "please type 'help' for a list of available commands\n");
+        }
+    }, {
+        prompt: '[[;{{ .Site.Params.promptColor | default "grey" }};]{{ .Site.Params.prompt }}][[;{{ .Site.Params.promptSimbolsColor | default "grey" }};]{{.Site.Params.promptSimbols | default ":~$"}}]' + " ",
+        greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
+        keydown: function(e, term) {
+            if (animation) {
+                if (e.which == 68 && e.ctrlKey) { // CTRL+D
+                    clearTimeout(timer);
+                    animation = false;
+                    term.echo(string + ' [[b;red;]FAIL]')
+                    .set_prompt(prompt);
+                }
+                return false;
+            }
+        },
+        autocompleteMenu: true,
+        completion: availableCommands
+        
+    });
+});
+</script>
+{{ end }}
